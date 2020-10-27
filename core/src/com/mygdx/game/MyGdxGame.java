@@ -44,8 +44,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
             lwjglGlfw.newFrame();
 
-            boolean[] showDemo = {true};
-            imgui.showDemoWindow(showDemo);
+            imgui.text("hello,libgdx");
 
             imgui.render();
 

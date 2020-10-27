@@ -1,6 +1,6 @@
 buildscript {
+    ext.kotlinVersion = '1.4.10'
     
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -11,7 +11,7 @@ buildscript {
         google()
     }
     dependencies {
-        
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
     }
 }
@@ -28,6 +28,14 @@ allprojects {
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
         imguiVersion = '1.76'
+        
+        //uno dependencies
+        uno_core_jar = 'uno_core_d5c433de2b43b6df5e68a443a40d37bd14cc72d9.jar'
+        uno_awt_jar = 'uno_awt_d5c433de2b43b6df5e68a443a40d37bd14cc72d9.jar'
+        uno_vk_jar = 'uno_vk_d5c433de2b43b6df5e68a443a40d37bd14cc72d9.jar'
+        gln_jar = 'gln_3e59f9ea92e49cfb563a43d6af560f2950fca403.jar'
+        glm_jar = 'glm_a4185eec1272b8b61e1b445a15f66d46299c196e.jar'
+        kool_jar = 'kool_b393e4c225e0acd9f199c6c022109bb12304d1ec.jar'
     }
 
     repositories {
@@ -44,31 +52,43 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java-library"
-
+    apply plugin: "kotlin"
 
     dependencies {
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
         
     }
 }
 
 project(":core") {
     apply plugin: "java-library"
-
+    apply plugin: "kotlin"
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-        
-        //ImGui
-        compile "com.github.kotlin-graphics:imgui:$imguiVersion"
 
         //required for retrieving a handle within core module
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         
+        //imgui
+        compile(files("libs/imgui-core.jar"))
+        compile(files("libs/imgui-gl.jar"))
+        compile(files("libs/imgui-glfw.jar"))
+        compile(files("libs/imgui-openjfx.jar"))
         //uno sdk
-        compile (files('libs/uno-core-all.jar'))
+        compile(files("libs/"+uno_core_jar))
+        compile(files("libs/"+uno_awt_jar))
+        compile(files("libs/"+uno_vk_jar))
+        compile(files("libs/"+gln_jar))
+        compile(files("libs/"+glm_jar))
+        compile(files("libs/"+kool_jar))
+        
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     }
 }
